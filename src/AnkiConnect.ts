@@ -45,6 +45,9 @@ export class AnkiConnect {
             guiShowAnswer: () => this.acRequest.post<AnkiConnectResponse>('/', {
                 "action": "guiShowAnswer",
             }),
+            guiUndo: () => this.acRequest.post<AnkiConnectResponse>('/', {
+                "action": "guiUndo",
+            }),
             guiAnswerCard: (ease: number) => this.acRequest.post<AnkiConnectResponse>('/', {
                 "action": "guiAnswerCard",
                 "params": {

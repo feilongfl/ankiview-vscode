@@ -48,6 +48,11 @@
           "command": "ankibar.command.sideview.answerCard",
           "when": "webviewId == 'ankibar.view.sideview'",
           "group": "ankibar"
+        },
+        {
+          "command": "ankibar.command.sideview.undo",
+          "when": "webviewId == 'ankibar.view.sideview'",
+          "group": "ankibar"
         }
       ]
     },
@@ -71,6 +76,10 @@
       {
         "command": "ankibar.command.sideview.answerCard",
         "title": "AnkiBar: Sideview Answer Card"
+      },
+      {
+        "command": "ankibar.command.sideview.undo",
+        "title": "AnkiBar: Undo"
       },
       {
         "command": "ankibar.command.sideview.answerCardEase1",
@@ -122,6 +131,10 @@
       {
         "command": "ankibar.command.sideview.showAnswer",
         "key": "ctrl+alt+`"
+      },
+      {
+        "command": "ankibar.command.sideview.undo",
+        "key": "ctrl+alt+z"
       }
     ]
   },

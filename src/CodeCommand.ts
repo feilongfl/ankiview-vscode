@@ -131,6 +131,17 @@ class SideviewAnswerCardEase4 extends SideviewAnswerCardEaseX {
     protected ease = 4;
 }
 
+class SideviewUndo extends VscodeCommand {
+    protected _command = "ankibar.command.sideview.undo";
+
+    protected error(err: unknown) {
+    }
+
+    protected async callback() {
+        await this.ankiProvider.undo();
+    }
+}
+
 let commandList = [
     // Miscellaneous
     MiscellaneousVersion,
@@ -144,6 +155,7 @@ let commandList = [
     SideviewAnswerCardEase2,
     SideviewAnswerCardEase3,
     SideviewAnswerCardEase4,
+    SideviewUndo,
 ];
 
 export function registCommand(ankiConnect: AnkiConnect.AnkiConnect, ankiProvider: CodeView.AnkiBarViewProvider, context: vscode.ExtensionContext) {
