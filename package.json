@@ -11,7 +11,7 @@
   ],
   "activationEvents": [],
   "main": "./dist/extension.js",
-  "capabilities": {
+  "capabilities":{
     "untrustedWorkspaces": {
       "supported": true,
       "description": "ankiview can work in untrusted workspace"
@@ -98,7 +98,7 @@
         "title": "AnkiView: Sideview Answer Card: Ease 4"
       }
     ],
-    "configuration": [
+    "configuration":[
       {
         "title": "AnkiView",
         "type": "object",
@@ -166,7 +166,6 @@
     "webpack-cli": "^5.1.1"
   },
   "dependencies": {
-    "@autoanki/anki-connect": "^0.1.4",
     "axios": "^1.4.0"
   }
 }
