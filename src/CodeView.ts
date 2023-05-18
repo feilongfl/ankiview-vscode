@@ -1,9 +1,9 @@
 import * as vscode from 'vscode';
 import * as AnkiConnect from './AnkiConnect';
 
-export class AnkiBarViewProvider implements vscode.WebviewViewProvider {
+export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 
-	public static readonly viewType = 'ankibar.view.sideview';
+	public static readonly viewType = 'ankiview.view.sideview';
 
 	private _view?: vscode.WebviewView;
 
@@ -11,7 +11,7 @@ export class AnkiBarViewProvider implements vscode.WebviewViewProvider {
 		private readonly _ankiConnect: AnkiConnect.AnkiConnect,
 		readonly _context: vscode.ExtensionContext,
 	) {
-		_context.subscriptions.push(vscode.window.registerWebviewViewProvider(AnkiBarViewProvider.viewType, this));
+		_context.subscriptions.push(vscode.window.registerWebviewViewProvider(AnkiViewViewProvider.viewType, this));
 	}
 
 	public async resolveWebviewView(

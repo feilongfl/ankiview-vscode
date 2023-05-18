@@ -1,7 +1,7 @@
 {
-  "name": "ankibar",
-  "displayName": "ankibar",
-  "description": "ankibar",
+  "name": "ankiview",
+  "displayName": "ankiview",
+  "description": "ankiview",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.78.0"
@@ -14,7 +14,7 @@
   "capabilities": {
     "untrustedWorkspaces": {
       "supported": true,
-      "description": "ankibar can work in untrusted workspace"
+      "description": "ankiview can work in untrusted workspace"
     }
   },
   "contributes": {
@@ -22,7 +22,7 @@
       "explorer": [
         {
           "type": "webview",
-          "id": "ankibar.view.sideview",
+          "id": "ankiview.view.sideview",
           "name": "Anki"
         }
       ]
@@ -30,80 +30,80 @@
     "menus": {
       "webview/context": [
         {
-          "command": "ankibar.Miscellaneous.Sync",
-          "when": "webviewId == 'ankibar.view.sideview'",
-          "group": "ankibar"
+          "command": "ankiview.Miscellaneous.Sync",
+          "when": "webviewId == 'ankiview.view.sideview'",
+          "group": "ankiview"
         },
         {
-          "command": "ankibar.command.sideview.showQuestion",
-          "when": "webviewId == 'ankibar.view.sideview'",
-          "group": "ankibar"
+          "command": "ankiview.command.sideview.showQuestion",
+          "when": "webviewId == 'ankiview.view.sideview'",
+          "group": "ankiview"
         },
         {
-          "command": "ankibar.command.sideview.showAnswer",
-          "when": "webviewId == 'ankibar.view.sideview'",
-          "group": "ankibar"
+          "command": "ankiview.command.sideview.showAnswer",
+          "when": "webviewId == 'ankiview.view.sideview'",
+          "group": "ankiview"
         },
         {
-          "command": "ankibar.command.sideview.answerCard",
-          "when": "webviewId == 'ankibar.view.sideview'",
-          "group": "ankibar"
+          "command": "ankiview.command.sideview.answerCard",
+          "when": "webviewId == 'ankiview.view.sideview'",
+          "group": "ankiview"
         },
         {
-          "command": "ankibar.command.sideview.undo",
-          "when": "webviewId == 'ankibar.view.sideview'",
-          "group": "ankibar"
+          "command": "ankiview.command.sideview.undo",
+          "when": "webviewId == 'ankiview.view.sideview'",
+          "group": "ankiview"
         }
       ]
     },
     "commands": [
       {
-        "command": "ankibar.Miscellaneous.Version",
-        "title": "AnkiBar: ping server"
+        "command": "ankiview.Miscellaneous.Version",
+        "title": "AnkiView: ping server"
       },
       {
-        "command": "ankibar.Miscellaneous.Sync",
-        "title": "AnkiBar: sync"
+        "command": "ankiview.Miscellaneous.Sync",
+        "title": "AnkiView: sync"
       },
       {
-        "command": "ankibar.command.sideview.showQuestion",
-        "title": "AnkiBar: Sideview Show Question"
+        "command": "ankiview.command.sideview.showQuestion",
+        "title": "AnkiView: Sideview Show Question"
       },
       {
-        "command": "ankibar.command.sideview.showAnswer",
-        "title": "AnkiBar: Sideview Show Answer"
+        "command": "ankiview.command.sideview.showAnswer",
+        "title": "AnkiView: Sideview Show Answer"
       },
       {
-        "command": "ankibar.command.sideview.answerCard",
-        "title": "AnkiBar: Sideview Answer Card"
+        "command": "ankiview.command.sideview.answerCard",
+        "title": "AnkiView: Sideview Answer Card"
       },
       {
-        "command": "ankibar.command.sideview.undo",
-        "title": "AnkiBar: Undo"
+        "command": "ankiview.command.sideview.undo",
+        "title": "AnkiView: Undo"
       },
       {
-        "command": "ankibar.command.sideview.answerCardEase1",
-        "title": "AnkiBar: Sideview Answer Card: Ease 1"
+        "command": "ankiview.command.sideview.answerCardEase1",
+        "title": "AnkiView: Sideview Answer Card: Ease 1"
       },
       {
-        "command": "ankibar.command.sideview.answerCardEase2",
-        "title": "AnkiBar: Sideview Answer Card: Ease 2"
+        "command": "ankiview.command.sideview.answerCardEase2",
+        "title": "AnkiView: Sideview Answer Card: Ease 2"
       },
       {
-        "command": "ankibar.command.sideview.answerCardEase3",
-        "title": "AnkiBar: Sideview Answer Card: Ease 3"
+        "command": "ankiview.command.sideview.answerCardEase3",
+        "title": "AnkiView: Sideview Answer Card: Ease 3"
       },
       {
-        "command": "ankibar.command.sideview.answerCardEase4",
-        "title": "AnkiBar: Sideview Answer Card: Ease 4"
+        "command": "ankiview.command.sideview.answerCardEase4",
+        "title": "AnkiView: Sideview Answer Card: Ease 4"
       }
     ],
     "configuration": [
       {
-        "title": "AnkiBar",
+        "title": "AnkiView",
         "type": "object",
         "properties": {
-          "ankibar.api": {
+          "ankiview.api": {
             "type": "string",
             "default": "http://localhost:8765",
             "description": "AnkiConnect listen address"
@@ -113,27 +113,27 @@
     ],
     "keybindings": [
       {
-        "command": "ankibar.command.sideview.answerCardEase1",
+        "command": "ankiview.command.sideview.answerCardEase1",
         "key": "ctrl+alt+1"
       },
       {
-        "command": "ankibar.command.sideview.answerCardEase2",
+        "command": "ankiview.command.sideview.answerCardEase2",
         "key": "ctrl+alt+2"
       },
       {
-        "command": "ankibar.command.sideview.answerCardEase3",
+        "command": "ankiview.command.sideview.answerCardEase3",
         "key": "ctrl+alt+3"
       },
       {
-        "command": "ankibar.command.sideview.answerCardEase4",
+        "command": "ankiview.command.sideview.answerCardEase4",
         "key": "ctrl+alt+4"
       },
       {
-        "command": "ankibar.command.sideview.showAnswer",
+        "command": "ankiview.command.sideview.showAnswer",
         "key": "ctrl+alt+`"
       },
       {
-        "command": "ankibar.command.sideview.undo",
+        "command": "ankiview.command.sideview.undo",
         "key": "ctrl+alt+z"
       }
     ]

@@ -1,4 +1,4 @@
-# ankibar
+# ankiview
 
 ## dependencies
 

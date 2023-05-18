@@ -5,16 +5,16 @@ import * as CodeView from './CodeView';
 class VscodeCommand {
     constructor(
         protected readonly _ankiConnect: AnkiConnect.AnkiConnect,
-        protected readonly ankiProvider: CodeView.AnkiBarViewProvider,
+        protected readonly ankiProvider: CodeView.AnkiViewViewProvider,
     ) { }
 
-    protected _command = "ankibar.unknow";
+    protected _command = "ankiview.unknow";
 
     protected async callback() {
     }
 
     protected error(err: unknown) {
-        vscode.window.showErrorMessage("ankibar: unknow error");
+        vscode.window.showErrorMessage("ankiview: unknow error");
     }
 
     private _getDisposable() {
@@ -34,23 +34,23 @@ class VscodeCommand {
 }
 
 class MiscellaneousVersion extends VscodeCommand {
-    protected _command = "ankibar.Miscellaneous.Version";
+    protected _command = "ankiview.Miscellaneous.Version";
 
     protected error(err: unknown) {
-        vscode.window.showInformationMessage('AnkiBar: AnkiConnect Ping Failed!');
+        vscode.window.showInformationMessage('AnkiView: AnkiConnect Ping Failed!');
     }
 
     protected async callback() {
         const version = await this._ankiConnect.api.miscellaneous.version();
-        vscode.window.showInformationMessage('AnkiBar: AnkiConnect Version: ' + version.result);
+        vscode.window.showInformationMessage('AnkiView: AnkiConnect Version: ' + version.result);
     }
 }
 
 class MiscellaneousSync extends VscodeCommand {
-    protected _command = "ankibar.Miscellaneous.Sync";
+    protected _command = "ankiview.Miscellaneous.Sync";
 
     protected error(err: unknown) {
-        vscode.window.showInformationMessage('AnkiBar: AnkiConnect Sync Failed!');
+        vscode.window.showInformationMessage('AnkiView: AnkiConnect Sync Failed!');
     }
 
     protected async callback() {
@@ -60,10 +60,10 @@ class MiscellaneousSync extends VscodeCommand {
 }
 
 class SideviewShowQuestion extends VscodeCommand {
-    protected _command = "ankibar.command.sideview.showQuestion";
+    protected _command = "ankiview.command.sideview.showQuestion";
 
     protected error(err: unknown) {
-        // vscode.window.showInformationMessage('AnkiBar: AnkiConnect Sync Failed!');
+        // vscode.window.showInformationMessage('AnkiView: AnkiConnect Sync Failed!');
     }
 
     protected async callback() {
@@ -72,10 +72,10 @@ class SideviewShowQuestion extends VscodeCommand {
 }
 
 class SideviewShowAnswer extends VscodeCommand {
-    protected _command = "ankibar.command.sideview.showAnswer";
+    protected _command = "ankiview.command.sideview.showAnswer";
 
     protected error(err: unknown) {
-        // vscode.window.showInformationMessage('AnkiBar: AnkiConnect Sync Failed!');
+        // vscode.window.showInformationMessage('AnkiView: AnkiConnect Sync Failed!');
     }
 
     protected async callback() {
@@ -84,7 +84,7 @@ class SideviewShowAnswer extends VscodeCommand {
 }
 
 class SideviewAnswerCard extends VscodeCommand {
-    protected _command = "ankibar.command.sideview.answerCard";
+    protected _command = "ankiview.command.sideview.answerCard";
 
     protected error(err: unknown) {
     }
@@ -98,7 +98,7 @@ class SideviewAnswerCard extends VscodeCommand {
 }
 
 class SideviewAnswerCardEaseX extends VscodeCommand {
-    protected _command = "ankibar.command.sideview.answerCardEaseX";
+    protected _command = "ankiview.command.sideview.answerCardEaseX";
     protected ease = -1;
 
     protected error(err: unknown) {
@@ -112,27 +112,27 @@ class SideviewAnswerCardEaseX extends VscodeCommand {
 }
 
 class SideviewAnswerCardEase1 extends SideviewAnswerCardEaseX {
-    protected _command = "ankibar.command.sideview.answerCardEase1";
+    protected _command = "ankiview.command.sideview.answerCardEase1";
     protected ease = 1;
 }
 
 class SideviewAnswerCardEase2 extends SideviewAnswerCardEaseX {
-    protected _command = "ankibar.command.sideview.answerCardEase2";
+    protected _command = "ankiview.command.sideview.answerCardEase2";
     protected ease = 2;
 }
 
 class SideviewAnswerCardEase3 extends SideviewAnswerCardEaseX {
-    protected _command = "ankibar.command.sideview.answerCardEase3";
+    protected _command = "ankiview.command.sideview.answerCardEase3";
     protected ease = 3;
 }
 
 class SideviewAnswerCardEase4 extends SideviewAnswerCardEaseX {
-    protected _command = "ankibar.command.sideview.answerCardEase4";
+    protected _command = "ankiview.command.sideview.answerCardEase4";
     protected ease = 4;
 }
 
 class SideviewUndo extends VscodeCommand {
-    protected _command = "ankibar.command.sideview.undo";
+    protected _command = "ankiview.command.sideview.undo";
 
     protected error(err: unknown) {
     }
@@ -158,6 +158,6 @@ let commandList = [
     SideviewUndo,
 ];
 
-export function registCommand(ankiConnect: AnkiConnect.AnkiConnect, ankiProvider: CodeView.AnkiBarViewProvider, context: vscode.ExtensionContext) {
+export function registCommand(ankiConnect: AnkiConnect.AnkiConnect, ankiProvider: CodeView.AnkiViewViewProvider, context: vscode.ExtensionContext) {
     commandList.forEach((vc) => { (new vc(ankiConnect, ankiProvider)).regist(context); });
 }
