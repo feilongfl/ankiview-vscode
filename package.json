@@ -47,6 +47,10 @@
       {
         "command": "ankibar.command.sideview.showAnswer",
         "title": "AnkiBar: Sideview Show Answer"
+      },
+      {
+        "command": "ankibar.command.sideview.answerCard",
+        "title": "AnkiBar: Sideview Answer Card"
       }
     ],
     "configuration": [

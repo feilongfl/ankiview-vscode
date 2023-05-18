@@ -25,10 +25,22 @@ export class AnkiBarViewProvider implements vscode.WebviewViewProvider {
 	}
 
 	public async showAnswer() {
-		this._view!.webview.html = (await this._ankiConnect.Api.Graphical.GuiCurrentCard()).result.answer;
+		this._view!.webview.html = (await this._ankiConnect.api.graphical.guiCurrentCard()).result.answer;
+		await this._ankiConnect.api.graphical.guiShowAnswer();
 	}
 
 	public async showQuestion() {
-		this._view!.webview.html = (await this._ankiConnect.Api.Graphical.GuiCurrentCard()).result.question;
+		this._view!.webview.html = (await this._ankiConnect.api.graphical.guiCurrentCard()).result.question;
+		await this._ankiConnect.api.graphical.guiShowQuestion();
+	}
+
+	public async answerCard(ease: number) {
+		await this.showAnswer();
+		let easeList = (await this._ankiConnect.api.graphical.guiCurrentCard()).result.buttons;
+
+		if (easeList.includes(ease)) {
+			await this._ankiConnect.api.graphical.guiAnswerCard(ease);
+		}
+		this.showQuestion();
 	}
 }

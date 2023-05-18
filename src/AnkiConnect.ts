@@ -31,20 +31,32 @@ export class AnkiConnect {
     acRequest = {
         //   get: <T>(url: string) => axios.get<T>(url).then(acResponseBody),
         post: <T>(url: string, body: {}) =>
-            axios.post<T>(url, {...body, "version": 6}).then(this.acResponseBody),
+            axios.post<T>(url, { ...body, "version": 6 }).then(this.acResponseBody),
     };
 
-    Api = {
-        Graphical: {
-            GuiCurrentCard: () => this.acRequest.post<AnkiConnectResponse_Graphical_GuiCurrentCard>('/', {
+    api = {
+        graphical: {
+            guiCurrentCard: () => this.acRequest.post<AnkiConnectResponse_Graphical_GuiCurrentCard>('/', {
                 "action": "guiCurrentCard",
             }),
+            guiShowQuestion: () => this.acRequest.post<AnkiConnectResponse>('/', {
+                "action": "guiShowQuestion",
+            }),
+            guiShowAnswer: () => this.acRequest.post<AnkiConnectResponse>('/', {
+                "action": "guiShowAnswer",
+            }),
+            guiAnswerCard: (ease: number) => this.acRequest.post<AnkiConnectResponse>('/', {
+                "action": "guiAnswerCard",
+                "params": {
+                    "ease": ease,
+                },
+            }),
         },
-        Miscellaneous: {
-            Version: () => this.acRequest.post<AnkiConnectResponse_Miscellaneous_Version>('/', {
+        miscellaneous: {
+            version: () => this.acRequest.post<AnkiConnectResponse_Miscellaneous_Version>('/', {
                 "action": "version",
             }),
-            Sync: () => this.acRequest.post<AnkiConnectResponse>('/', {
+            sync: () => this.acRequest.post<AnkiConnectResponse>('/', {
                 "action": "sync",
             }),
         },

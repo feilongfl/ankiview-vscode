@@ -4,9 +4,9 @@ import * as CodeView from './CodeView';
 
 class VscodeCommand {
     constructor(
-		protected readonly _ankiConnect: AnkiConnect.AnkiConnect,
+        protected readonly _ankiConnect: AnkiConnect.AnkiConnect,
         protected readonly ankiProvider: CodeView.AnkiBarViewProvider,
-	) { }
+    ) { }
 
     protected _command = "ankibar.unknow";
 
@@ -41,7 +41,7 @@ class MiscellaneousVersion extends VscodeCommand {
     }
 
     protected async callback() {
-        const version = await this._ankiConnect.Api.Miscellaneous.Version();
+        const version = await this._ankiConnect.api.miscellaneous.version();
         vscode.window.showInformationMessage('AnkiBar: AnkiConnect Version: ' + version.result);
     }
 }
@@ -55,7 +55,7 @@ class MiscellaneousSync extends VscodeCommand {
 
     protected async callback() {
         // todo: add tips here
-        await this._ankiConnect.Api.Miscellaneous.Sync();
+        await this._ankiConnect.api.miscellaneous.sync();
     }
 }
 
@@ -83,6 +83,19 @@ class SideviewShowAnswer extends VscodeCommand {
     }
 }
 
+class SideviewAnswerCard extends VscodeCommand {
+    protected _command = "ankibar.command.sideview.answerCard";
+
+    protected error(err: unknown) {
+    }
+
+    protected async callback() {
+        vscode.window.showInputBox({ "title": "Answer" }).then(
+            (ease => { this.ankiProvider.answerCard(Number(ease)); })
+        );
+    }
+}
+
 let commandList = [
     // Miscellaneous
     MiscellaneousVersion,
@@ -91,8 +104,9 @@ let commandList = [
     // sideview
     SideviewShowQuestion,
     SideviewShowAnswer,
+    SideviewAnswerCard,
 ];
 
 export function registCommand(ankiConnect: AnkiConnect.AnkiConnect, ankiProvider: CodeView.AnkiBarViewProvider, context: vscode.ExtensionContext) {
-    commandList.forEach((vc)=>{(new vc(ankiConnect, ankiProvider)).regist(context);});
+    commandList.forEach((vc) => { (new vc(ankiConnect, ankiProvider)).regist(context); });
 }
