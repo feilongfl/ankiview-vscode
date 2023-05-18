@@ -11,11 +11,30 @@
   ],
   "activationEvents": [],
   "main": "./dist/extension.js",
+  "capabilities":{
+    "untrustedWorkspaces": {
+      "supported": true,
+      "description": "ankibar can work in untrusted workspace"
+    }
+  },
   "contributes": {
     "commands": [
       {
         "command": "ankibar.Version",
         "title": "AnkiBar: ping server"
+      }
+    ],
+    "configuration":[
+      {
+        "title": "AnkiBar",
+        "type": "object",
+        "properties": {
+          "ankibar.api": {
+            "type":"string",
+            "default": "http://localhost:8765",
+            "description": "AnkiConnect listen address"
+          }
+        }
       }
     ]
   },
