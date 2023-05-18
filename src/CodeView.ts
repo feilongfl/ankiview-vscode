@@ -34,13 +34,18 @@ export class AnkiBarViewProvider implements vscode.WebviewViewProvider {
 		await this._ankiConnect.api.graphical.guiShowQuestion();
 	}
 
-	public async answerCard(ease: number) {
+	public async answerCard(ease: number, autoEase: boolean = false) {
 		await this.showAnswer();
 		let easeList = (await this._ankiConnect.api.graphical.guiCurrentCard()).result.buttons;
 
 		if (easeList.includes(ease)) {
 			await this._ankiConnect.api.graphical.guiAnswerCard(ease);
+		} else if (autoEase) {
+			await this._ankiConnect.api.graphical.guiAnswerCard(easeList[easeList.length - 1]);
+		} else {
+			return false;
 		}
 		this.showQuestion();
+		return true;
 	}
 }

@@ -90,10 +90,45 @@ class SideviewAnswerCard extends VscodeCommand {
     }
 
     protected async callback() {
-        vscode.window.showInputBox({ "title": "Answer" }).then(
-            (ease => { this.ankiProvider.answerCard(Number(ease)); })
-        );
+        let ease = await vscode.window.showInputBox({ "title": "Answer" });
+        if (! await this.ankiProvider.answerCard(Number(ease))) {
+            vscode.window.showErrorMessage("Answer Value Not Correct.");
+        }
     }
+}
+
+class SideviewAnswerCardEaseX extends VscodeCommand {
+    protected _command = "ankibar.command.sideview.answerCardEaseX";
+    protected ease = -1;
+
+    protected error(err: unknown) {
+    }
+
+    protected async callback() {
+        if (! await this.ankiProvider.answerCard(Number(this.ease), true)) {
+            vscode.window.showErrorMessage("AnswerCard Process Error.");
+        }
+    }
+}
+
+class SideviewAnswerCardEase1 extends SideviewAnswerCardEaseX {
+    protected _command = "ankibar.command.sideview.answerCardEase1";
+    protected ease = 1;
+}
+
+class SideviewAnswerCardEase2 extends SideviewAnswerCardEaseX {
+    protected _command = "ankibar.command.sideview.answerCardEase2";
+    protected ease = 2;
+}
+
+class SideviewAnswerCardEase3 extends SideviewAnswerCardEaseX {
+    protected _command = "ankibar.command.sideview.answerCardEase3";
+    protected ease = 3;
+}
+
+class SideviewAnswerCardEase4 extends SideviewAnswerCardEaseX {
+    protected _command = "ankibar.command.sideview.answerCardEase4";
+    protected ease = 4;
 }
 
 let commandList = [
@@ -105,6 +140,10 @@ let commandList = [
     SideviewShowQuestion,
     SideviewShowAnswer,
     SideviewAnswerCard,
+    SideviewAnswerCardEase1,
+    SideviewAnswerCardEase2,
+    SideviewAnswerCardEase3,
+    SideviewAnswerCardEase4,
 ];
 
 export function registCommand(ankiConnect: AnkiConnect.AnkiConnect, ankiProvider: CodeView.AnkiBarViewProvider, context: vscode.ExtensionContext) {

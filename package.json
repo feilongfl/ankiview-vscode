@@ -51,6 +51,22 @@
       {
         "command": "ankibar.command.sideview.answerCard",
         "title": "AnkiBar: Sideview Answer Card"
+      },
+      {
+        "command": "ankibar.command.sideview.answerCardEase1",
+        "title": "AnkiBar: Sideview Answer Card: Ease 1"
+      },
+      {
+        "command": "ankibar.command.sideview.answerCardEase2",
+        "title": "AnkiBar: Sideview Answer Card: Ease 2"
+      },
+      {
+        "command": "ankibar.command.sideview.answerCardEase3",
+        "title": "AnkiBar: Sideview Answer Card: Ease 3"
+      },
+      {
+        "command": "ankibar.command.sideview.answerCardEase4",
+        "title": "AnkiBar: Sideview Answer Card: Ease 4"
       }
     ],
     "configuration": [
