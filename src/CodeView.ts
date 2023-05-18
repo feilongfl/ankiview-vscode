@@ -25,13 +25,27 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 	}
 
 	public async showAnswer() {
-		this._view!.webview.html = (await this._ankiConnect.api.graphical.guiCurrentCard()).result.answer;
-		await this._ankiConnect.api.graphical.guiShowAnswer();
+		try {
+			this._view!.webview.html = (await this._ankiConnect.api.graphical.guiCurrentCard()).result.answer;
+			await this._ankiConnect.api.graphical.guiShowAnswer();
+		} catch (err) {
+			this.error(err);
+		}
 	}
 
 	public async showQuestion() {
-		this._view!.webview.html = (await this._ankiConnect.api.graphical.guiCurrentCard()).result.question;
-		await this._ankiConnect.api.graphical.guiShowQuestion();
+		try {
+			this._view!.webview.html = (await this._ankiConnect.api.graphical.guiCurrentCard()).result.question;
+			await this._ankiConnect.api.graphical.guiShowQuestion();
+		} catch (err) {
+			this.error(err);
+		}
+	}
+
+	public async error(err: unknown) {
+		this._view!.webview.html = `
+		<p>Please Open Collection In "Anki" Application.</p>
+		`;
 	}
 
 	public async undo() {
