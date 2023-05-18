@@ -8,9 +8,11 @@ export class AnkiBarViewProvider implements vscode.WebviewViewProvider {
 	private _view?: vscode.WebviewView;
 
 	constructor(
-		private readonly _extensionUri: vscode.Uri,
 		private readonly _ankiConnect: AnkiConnect.AnkiConnect,
-	) { }
+		readonly _context: vscode.ExtensionContext,
+	) {
+		_context.subscriptions.push(vscode.window.registerWebviewViewProvider(AnkiBarViewProvider.viewType, this));
+	}
 
 	public async resolveWebviewView(
 		webviewView: vscode.WebviewView,
@@ -19,12 +21,14 @@ export class AnkiBarViewProvider implements vscode.WebviewViewProvider {
 	) {
 		this._view = webviewView;
 
-		webviewView.webview.html = await this._getHtmlForWebview(webviewView.webview);
+		await this.showQuestion();
 	}
 
-	private async _getHtmlForWebview(webview: vscode.Webview) {
-		let cc = await this._ankiConnect.Api.Graphical.GuiCurrentCard();
+	public async showAnswer() {
+		this._view!.webview.html = (await this._ankiConnect.Api.Graphical.GuiCurrentCard()).result.answer;
+	}
 
-		return cc.result.answer;
+	public async showQuestion() {
+		this._view!.webview.html = (await this._ankiConnect.Api.Graphical.GuiCurrentCard()).result.question;
 	}
 }

@@ -1,9 +1,11 @@
 import * as vscode from 'vscode';
 import * as AnkiConnect from './AnkiConnect';
+import * as CodeView from './CodeView';
 
 class VscodeCommand {
     constructor(
 		protected readonly _ankiConnect: AnkiConnect.AnkiConnect,
+        protected readonly ankiProvider: CodeView.AnkiBarViewProvider,
 	) { }
 
     protected _command = "ankibar.unknow";
@@ -57,12 +59,40 @@ class MiscellaneousSync extends VscodeCommand {
     }
 }
 
+class SideviewShowQuestion extends VscodeCommand {
+    protected _command = "ankibar.command.sideview.showQuestion";
+
+    protected error(err: unknown) {
+        // vscode.window.showInformationMessage('AnkiBar: AnkiConnect Sync Failed!');
+    }
+
+    protected async callback() {
+        await this.ankiProvider.showQuestion();
+    }
+}
+
+class SideviewShowAnswer extends VscodeCommand {
+    protected _command = "ankibar.command.sideview.showAnswer";
+
+    protected error(err: unknown) {
+        // vscode.window.showInformationMessage('AnkiBar: AnkiConnect Sync Failed!');
+    }
+
+    protected async callback() {
+        await this.ankiProvider.showAnswer();
+    }
+}
+
 let commandList = [
     // Miscellaneous
     MiscellaneousVersion,
     MiscellaneousSync,
+
+    // sideview
+    SideviewShowQuestion,
+    SideviewShowAnswer,
 ];
 
-export function registCommand(ankiConnect: AnkiConnect.AnkiConnect, context: vscode.ExtensionContext) {
-    commandList.forEach((vc)=>{(new vc(ankiConnect)).regist(context);});
+export function registCommand(ankiConnect: AnkiConnect.AnkiConnect, ankiProvider: CodeView.AnkiBarViewProvider, context: vscode.ExtensionContext) {
+    commandList.forEach((vc)=>{(new vc(ankiConnect, ankiProvider)).regist(context);});
 }
