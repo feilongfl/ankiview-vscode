@@ -9,6 +9,7 @@
   "categories": [
     "Other"
   ],
+  "publisher": "feilong",
   "repository": "https://github.com/feilongfl/ankiview-vscode",
   "activationEvents": [],
   "main": "./dist/extension.js",
