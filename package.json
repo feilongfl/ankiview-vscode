@@ -37,10 +37,6 @@
         "title": "AnkiBar: sync"
       },
       {
-        "command": "ankibar.Graphical.GuiCurrentCard",
-        "title": "AnkiBar: Refersh Card"
-      },
-      {
         "command": "ankibar.command.sideview.showQuestion",
         "title": "AnkiBar: Sideview Show Question"
       },
