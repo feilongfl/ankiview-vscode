@@ -2,7 +2,7 @@
   "name": "ankiview",
   "displayName": "ankiview",
   "description": "ankiview",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "engines": {
     "vscode": "^1.78.0"
   },
@@ -12,7 +12,7 @@
   "repository": "https://github.com/feilongfl/ankiview-vscode",
   "activationEvents": [],
   "main": "./dist/extension.js",
-  "capabilities":{
+  "capabilities": {
     "untrustedWorkspaces": {
       "supported": true,
       "description": "ankiview can work in untrusted workspace"
@@ -99,7 +99,7 @@
         "title": "AnkiView: Sideview Answer Card: Ease 4"
       }
     ],
-    "configuration":[
+    "configuration": [
       {
         "title": "AnkiView",
         "type": "object",
