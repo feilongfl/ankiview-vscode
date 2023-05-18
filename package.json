@@ -20,8 +20,12 @@
   "contributes": {
     "commands": [
       {
-        "command": "ankibar.Version",
+        "command": "ankibar.Miscellaneous.Version",
         "title": "AnkiBar: ping server"
+      },
+      {
+        "command": "ankibar.Miscellaneous.Sync",
+        "title": "AnkiBar: sync"
       }
     ],
     "configuration": [
