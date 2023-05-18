@@ -18,6 +18,15 @@
     }
   },
   "contributes": {
+    "views": {
+      "explorer": [
+        {
+          "type": "webview",
+          "id": "ankibar.view.sideview",
+          "name": "Anki"
+        }
+      ]
+    },
     "commands": [
       {
         "command": "ankibar.Miscellaneous.Version",
@@ -26,6 +35,10 @@
       {
         "command": "ankibar.Miscellaneous.Sync",
         "title": "AnkiBar: sync"
+      },
+      {
+        "command": "ankibar.Graphical.GuiCurrentCard",
+        "title": "AnkiBar: Refersh Card"
       }
     ],
     "configuration": [
