@@ -77,6 +77,28 @@
           }
         }
       }
+    ],
+    "keybindings": [
+      {
+        "command": "ankibar.command.sideview.answerCardEase1",
+        "key": "ctrl+alt+1"
+      },
+      {
+        "command": "ankibar.command.sideview.answerCardEase2",
+        "key": "ctrl+alt+2"
+      },
+      {
+        "command": "ankibar.command.sideview.answerCardEase3",
+        "key": "ctrl+alt+3"
+      },
+      {
+        "command": "ankibar.command.sideview.answerCardEase4",
+        "key": "ctrl+alt+4"
+      },
+      {
+        "command": "ankibar.command.sideview.showAnswer",
+        "key": "ctrl+alt+`"
+      }
     ]
   },
   "scripts": {
