@@ -27,6 +27,30 @@
         }
       ]
     },
+    "menus": {
+      "webview/context": [
+        {
+          "command": "ankibar.Miscellaneous.Sync",
+          "when": "webviewId == 'ankibar.view.sideview'",
+          "group": "ankibar"
+        },
+        {
+          "command": "ankibar.command.sideview.showQuestion",
+          "when": "webviewId == 'ankibar.view.sideview'",
+          "group": "ankibar"
+        },
+        {
+          "command": "ankibar.command.sideview.showAnswer",
+          "when": "webviewId == 'ankibar.view.sideview'",
+          "group": "ankibar"
+        },
+        {
+          "command": "ankibar.command.sideview.answerCard",
+          "when": "webviewId == 'ankibar.view.sideview'",
+          "group": "ankibar"
+        }
+      ]
+    },
     "commands": [
       {
         "command": "ankibar.Miscellaneous.Version",
