@@ -8,10 +8,10 @@ class VscodeCommand {
 
     protected _command = "ankibar.unknow";
 
-    public async callback() {
+    protected async callback() {
     }
 
-    public error(err: unknown) {
+    protected error(err: unknown) {
         vscode.window.showErrorMessage("ankibar: unknow error");
     }
 
@@ -31,28 +31,38 @@ class VscodeCommand {
     }
 }
 
-export class MiscellaneousVersion extends VscodeCommand {
+class MiscellaneousVersion extends VscodeCommand {
     protected _command = "ankibar.Miscellaneous.Version";
 
-    public error(err: unknown) {
+    protected error(err: unknown) {
         vscode.window.showInformationMessage('AnkiBar: AnkiConnect Ping Failed!');
     }
 
-    public async callback() {
+    protected async callback() {
         const version = await this._ankiConnect.Api.Miscellaneous.Version();
         vscode.window.showInformationMessage('AnkiBar: AnkiConnect Version: ' + version.result);
     }
 }
 
-export class MiscellaneousSync extends VscodeCommand {
+class MiscellaneousSync extends VscodeCommand {
     protected _command = "ankibar.Miscellaneous.Sync";
 
-    public error(err: unknown) {
+    protected error(err: unknown) {
         vscode.window.showInformationMessage('AnkiBar: AnkiConnect Sync Failed!');
     }
 
-    public async callback() {
+    protected async callback() {
         // todo: add tips here
         await this._ankiConnect.Api.Miscellaneous.Sync();
     }
+}
+
+let commandList = [
+    // Miscellaneous
+    MiscellaneousVersion,
+    MiscellaneousSync,
+];
+
+export function registCommand(ankiConnect: AnkiConnect.AnkiConnect, context: vscode.ExtensionContext) {
+    commandList.forEach((vc)=>{(new vc(ankiConnect)).regist(context);});
 }

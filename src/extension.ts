@@ -9,8 +9,7 @@ let configuration = vscode.workspace.getConfiguration(ankibarPluginId);
 const ankiConnect = new AnkiConnect.AnkiConnect(configuration.get<string>("api", "http://localhost:8765"));
 
 export function activate(context: vscode.ExtensionContext) {
-	(new CodeCommand.MiscellaneousVersion(ankiConnect)).regist(context);
-	(new CodeCommand.MiscellaneousSync(ankiConnect)).regist(context);
+	CodeCommand.registCommand(ankiConnect, context);
 
 	const provider = new CodeView.AnkiBarViewProvider(context.extensionUri, ankiConnect);
 	context.subscriptions.push(vscode.window.registerWebviewViewProvider(CodeView.AnkiBarViewProvider.viewType, provider));
