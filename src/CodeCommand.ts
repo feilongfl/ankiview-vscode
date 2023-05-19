@@ -61,6 +61,23 @@ class MiscellaneousSync extends VscodeCommand {
     }
 }
 
+class SideviewOpenDeck extends VscodeCommand {
+    protected _command = "ankiview.command.sideview.openDeck";
+
+    protected error(err: unknown) {
+        vscode.window.showInformationMessage('AnkiView: Deck Open Failed!');
+    }
+
+    protected async callback() {
+        let decks = await this.ankiProvider.getDecks();
+        let deck = await vscode.window.showQuickPick(decks);
+        if (deck !== undefined) {
+            await this.ankiProvider.openDeck(deck);
+            await this.ankiProvider.showQuestion();
+        }
+    }
+}
+
 class SideviewShowQuestion extends VscodeCommand {
     protected _command = "ankiview.command.sideview.showQuestion";
 
@@ -150,6 +167,7 @@ let commandList = [
     MiscellaneousSync,
 
     // sideview
+    SideviewOpenDeck,
     SideviewShowQuestion,
     SideviewShowAnswer,
     SideviewAnswerCard,

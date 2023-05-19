@@ -37,6 +37,11 @@
           "group": "ankiview"
         },
         {
+          "command": "ankiview.command.sideview.openDeck",
+          "when": "webviewId == 'ankiview.view.sideview'",
+          "group": "ankiview"
+        },
+        {
           "command": "ankiview.command.sideview.showQuestion",
           "when": "webviewId == 'ankiview.view.sideview'",
           "group": "ankiview"
@@ -66,6 +71,10 @@
       {
         "command": "ankiview.Miscellaneous.Sync",
         "title": "AnkiView: sync"
+      },
+      {
+        "command": "ankiview.command.sideview.openDeck",
+        "title": "AnkiView: Open deck"
       },
       {
         "command": "ankiview.command.sideview.showQuestion",

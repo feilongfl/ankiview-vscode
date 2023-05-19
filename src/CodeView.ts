@@ -40,6 +40,14 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 		return `<div class="card ankiview">${html}</div>`;
 	}
 
+	public async getDecks() {
+		return (await this._ankiConnect.api.deck.deckNames()).result;
+	}
+
+	public async openDeck(name: string) {
+		await this._ankiConnect.api.graphical.guiDeckReview(name);
+	}
+
 	public async showAnswer() {
 		console.log("CodeView: showAnswer");
 		try {

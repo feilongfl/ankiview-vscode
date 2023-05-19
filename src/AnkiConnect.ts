@@ -38,6 +38,10 @@ export interface AnkiConnectResponse_Miscellaneous_Version extends AnkiConnectRe
     result: string
 };
 
+export interface AnkiConnectResponse_Graphical_DeckNames extends AnkiConnectResponse {
+    result: [string],
+};
+
 export interface AnkiConnectResponse_Graphical_GuiCurrentCard extends AnkiConnectResponse {
     result: {
         "answer": string,
@@ -65,6 +69,9 @@ export class AnkiConnect {
 
     api = {
         deck: {
+            deckNames: () => this.acRequest.post<AnkiConnectResponse_Graphical_DeckNames>('/', {
+                "action": "deckNames",
+            }),
             getDeckConfig: (deck: string) => this.acRequest.post<AnkiConnectResponse_Deck_GetDeckConfig>('/', {
                 "action": "getDeckConfig",
                 "params": {
@@ -89,6 +96,12 @@ export class AnkiConnect {
                 "action": "guiAnswerCard",
                 "params": {
                     "ease": ease,
+                },
+            }),
+            guiDeckReview: (name: string) => this.acRequest.post<AnkiConnectResponse>('/', {
+                "action": "guiDeckReview",
+                "params": {
+                    "name": name,
                 },
             }),
         },
