@@ -1,17 +1,21 @@
 import * as vscode from 'vscode';
 import * as AnkiConnect from './AnkiConnect';
+import * as CodeBar from './CodeBar';
 
 export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 
 	public static readonly viewType = 'ankiview.view.sideview';
 
 	private _view?: vscode.WebviewView;
+	private _ankiTimeBar: CodeBar.TimeBar;
 
 	constructor(
 		private readonly _ankiConnect: AnkiConnect.AnkiConnect,
+		protected readonly ankiTimeBar: CodeBar.TimeBar,
 		readonly _context: vscode.ExtensionContext,
 	) {
 		_context.subscriptions.push(vscode.window.registerWebviewViewProvider(AnkiViewViewProvider.viewType, this));
+		this._ankiTimeBar = ankiTimeBar;
 	}
 
 	public async resolveWebviewView(
@@ -42,6 +46,7 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 			let html = (await this._ankiConnect.api.graphical.guiCurrentCard()).result.answer;
 			this._view!.webview.html = await this.replaceResource(html);
 			await this._ankiConnect.api.graphical.guiShowAnswer();
+			await this._ankiTimeBar.clear(30);
 		} catch (err) {
 			this.error(err);
 		}
@@ -53,6 +58,7 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 			let html = (await this._ankiConnect.api.graphical.guiCurrentCard()).result.question;
 			this._view!.webview.html = await this.replaceResource(html);
 			await this._ankiConnect.api.graphical.guiShowQuestion();
+			await this._ankiTimeBar.clear(30);
 		} catch (err) {
 			this.error(err);
 		}

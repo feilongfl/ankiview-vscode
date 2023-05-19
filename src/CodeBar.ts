@@ -42,7 +42,7 @@ class PeriodFunc {
     }
 }
 
-export class CodeBar {
+export class TimeBar {
     constructor(context: vscode.ExtensionContext) {
         this._bar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
         this._bar.text = `$(clock) 0`;

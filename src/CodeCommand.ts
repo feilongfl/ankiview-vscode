@@ -7,7 +7,7 @@ class VscodeCommand {
     constructor(
         protected readonly _ankiConnect: AnkiConnect.AnkiConnect,
         protected readonly ankiProvider: CodeView.AnkiViewViewProvider,
-        protected readonly ankiCodeBar: CodeBar.CodeBar,
+        protected readonly ankiCodeBar: CodeBar.TimeBar,
     ) { }
 
     protected _command = "ankiview.unknow";
@@ -70,7 +70,6 @@ class SideviewShowQuestion extends VscodeCommand {
 
     protected async callback() {
         await this.ankiProvider.showQuestion();
-        await this.ankiCodeBar.clear(30);
     }
 }
 
@@ -97,7 +96,6 @@ class SideviewAnswerCard extends VscodeCommand {
         if (! await this.ankiProvider.answerCard(Number(ease))) {
             vscode.window.showErrorMessage("Answer Value Not Correct.");
         }
-        await this.ankiCodeBar.clear(30);
     }
 }
 
@@ -112,7 +110,6 @@ class SideviewAnswerCardEaseX extends VscodeCommand {
         if (! await this.ankiProvider.answerCard(Number(this.ease), true)) {
             vscode.window.showErrorMessage("AnswerCard Process Error.");
         }
-        await this.ankiCodeBar.clear(30);
     }
 }
 
@@ -165,7 +162,7 @@ let commandList = [
 
 export function registCommand(ankiConnect: AnkiConnect.AnkiConnect,
     ankiProvider: CodeView.AnkiViewViewProvider,
-    ankiCodeBar: CodeBar.CodeBar,
+    ankiCodeBar: CodeBar.TimeBar,
     context: vscode.ExtensionContext) {
     commandList.forEach((vc) => { (new vc(ankiConnect, ankiProvider, ankiCodeBar)).regist(context); });
 }
