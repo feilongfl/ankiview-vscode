@@ -33,7 +33,7 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 			html = html.replace(images[index], `data:image/png;base64, ` + img.result);
 		}
 
-		return html;
+		return `<div class="card ankiview">${html}</div>`;
 	}
 
 	public async showAnswer() {
