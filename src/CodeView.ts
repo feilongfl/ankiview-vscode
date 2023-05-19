@@ -60,7 +60,7 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 
 	public async error(err: unknown) {
 		this._view!.webview.html = `
-		<p>Please Open Collection In "Anki" Application.</p>
+		<p>Please Open Collection In "Anki" Application then trig "AnkiView: SideView: Show Question" command.</p>
 		`;
 	}
 
