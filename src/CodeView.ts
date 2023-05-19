@@ -24,10 +24,23 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 		await this.showQuestion();
 	}
 
+	private async replaceResource(html: string) {
+		let images = Array.from(html.matchAll(/img src="(.*?)"/g)).map((v, _) => v[1]);
+		let imageData = images.map(async (v) => this._ankiConnect.api.media.retrieveMediaFile(v));
+
+		for (let index = 0; index < images.length; index++) {
+			let img = await imageData[index];
+			html = html.replace(images[index], `data:image/png;base64, ` + img.result);
+		}
+
+		return html;
+	}
+
 	public async showAnswer() {
 		console.log("CodeView: showAnswer");
 		try {
-			this._view!.webview.html = (await this._ankiConnect.api.graphical.guiCurrentCard()).result.answer;
+			let html = (await this._ankiConnect.api.graphical.guiCurrentCard()).result.answer;
+			this._view!.webview.html = await this.replaceResource(html);
 			await this._ankiConnect.api.graphical.guiShowAnswer();
 		} catch (err) {
 			this.error(err);
@@ -37,7 +50,8 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 	public async showQuestion() {
 		console.log("CodeView: showQuestion");
 		try {
-			this._view!.webview.html = (await this._ankiConnect.api.graphical.guiCurrentCard()).result.question;
+			let html = (await this._ankiConnect.api.graphical.guiCurrentCard()).result.question;
+			this._view!.webview.html = await this.replaceResource(html);
 			await this._ankiConnect.api.graphical.guiShowQuestion();
 		} catch (err) {
 			this.error(err);

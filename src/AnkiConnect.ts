@@ -5,6 +5,10 @@ interface AnkiConnectResponse {
     result: any
 }
 
+export interface AnkiConnectResponse_Media_RetrieveMediaFile extends AnkiConnectResponse {
+    result: string
+};
+
 export interface AnkiConnectResponse_Miscellaneous_Version extends AnkiConnectResponse {
     result: string
 };
@@ -52,6 +56,14 @@ export class AnkiConnect {
                 "action": "guiAnswerCard",
                 "params": {
                     "ease": ease,
+                },
+            }),
+        },
+        media: {
+            retrieveMediaFile: (fileName: string) => this.acRequest.post<AnkiConnectResponse_Media_RetrieveMediaFile>('/', {
+                "action": "retrieveMediaFile",
+                "params": {
+                    "filename": fileName,
                 },
             }),
         },
