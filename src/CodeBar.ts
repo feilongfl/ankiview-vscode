@@ -48,7 +48,6 @@ export class TimeBar {
         this._bar.text = `$(clock) 0`;
 
         context.subscriptions.push(this._bar);
-        this._bar.show();
 
         this._timer = new PeriodFunc((time: number, max: number) => this.updateBar(time, max), 1000);
     }
@@ -67,8 +66,13 @@ export class TimeBar {
     }
 
     public clear(max: number) {
-        this._timer.start(max);
-        this._bar.text = `$(clock) 0`;
-        this._bar.backgroundColor = new vscode.ThemeColor('statusBarItem.prominentBackground');
+        if (max === 0) {
+            this._bar.hide();
+        } else {
+            this._timer.start(max);
+            this._bar.text = `$(clock) 0`;
+            this._bar.backgroundColor = new vscode.ThemeColor('statusBarItem.prominentBackground');
+            this._bar.show();
+        }
     }
 }

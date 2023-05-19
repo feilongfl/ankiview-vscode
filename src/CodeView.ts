@@ -68,6 +68,7 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 		this._view!.webview.html = `
 		<p>Please Open Collection In "Anki" Application then trig "AnkiView: SideView: Show Question" command.</p>
 		`;
+		await this._ankiTimeBar.clear(0);
 	}
 
 	public async undo() {
