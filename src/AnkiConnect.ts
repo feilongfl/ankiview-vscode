@@ -5,6 +5,31 @@ interface AnkiConnectResponse {
     result: any
 }
 
+export interface AnkiConnectResponse_Deck_GetDeckConfig extends AnkiConnectResponse {
+    result: {
+        "id": number,
+        "mod": number,
+        "name": string,
+        "usn": number,
+        "maxTaken": number,
+        "autoplay": boolean,
+        "timer": number,
+        "replayq": boolean,
+        "new": any,
+        "rev": any,
+        "lapse": any,
+        "dyn": boolean,
+        "newMix": number,
+        "newPerDayMinimum": number,
+        "interdayLearningMix": number,
+        "reviewOrder": number,
+        "newSortOrder": number,
+        "newGatherPriority": number,
+        "buryInterdayLearning": boolean,
+        "reminder": any,
+    }
+};
+
 export interface AnkiConnectResponse_Media_RetrieveMediaFile extends AnkiConnectResponse {
     result: string
 };
@@ -39,6 +64,14 @@ export class AnkiConnect {
     };
 
     api = {
+        deck: {
+            getDeckConfig: (deck: string) => this.acRequest.post<AnkiConnectResponse_Deck_GetDeckConfig>('/', {
+                "action": "getDeckConfig",
+                "params": {
+                    "deck": deck,
+                },
+            }),
+        },
         graphical: {
             guiCurrentCard: () => this.acRequest.post<AnkiConnectResponse_Graphical_GuiCurrentCard>('/', {
                 "action": "guiCurrentCard",

@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import * as AnkiConnect from './AnkiConnect';
 import * as CodeCommand from './CodeCommand';
 import * as CodeView from './CodeView';
+import * as CodeBar from './CodeBar'
 
 const ankiviewPluginId = "ankiview";
 
@@ -10,7 +11,8 @@ const ankiConnect = new AnkiConnect.AnkiConnect(configuration.get<string>("api",
 
 export function activate(context: vscode.ExtensionContext) {
 	const ankiProvider = new CodeView.AnkiViewViewProvider(ankiConnect, context);
-	CodeCommand.registCommand(ankiConnect, ankiProvider, context);
+	const ankiCodeBar = new CodeBar.CodeBar(context);
+	CodeCommand.registCommand(ankiConnect, ankiProvider, ankiCodeBar, context);
 }
 
 export function deactivate() { }
