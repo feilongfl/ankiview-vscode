@@ -122,7 +122,8 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 			</div>
 			`;
 			let viewHtml = this.mergeViewHtml(cardHtml, ctrlHtml);
-			this._view!.webview.html = this.genAnkiViewHtml(viewHtml);
+			let viewTitle = "ANKI: Answer";
+			this.setAnkiViewContent(viewHtml, viewTitle);
 			await this._ankiConnect.api.graphical.guiShowAnswer();
 		} catch (err) {
 			this.error(err);
@@ -145,7 +146,8 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 			</div>
 			`;
 			let viewHtml = this.mergeViewHtml(cardHtml, ctrlHtml);
-			this._view!.webview.html = this.genAnkiViewHtml(viewHtml);
+			let viewTitle = "ANKI: Question";
+			this.setAnkiViewContent(viewHtml, viewTitle);
 			await this._ankiConnect.api.graphical.guiShowQuestion();
 			await this._ankiTimeBar.clear(30);
 		} catch (err) {
@@ -162,7 +164,7 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 		return text;
 	}
 
-	private genAnkiViewHtml(content: string) {
+	private setAnkiViewContent(content: string, title: string = "ANKI") {
 		const scriptAnkiUri = this._view!.webview.asWebviewUri(vscode.Uri.joinPath(this._context.extensionUri, 'media', 'CodeView.js'));
 		const styleCodeUri = this._view!.webview.asWebviewUri(vscode.Uri.joinPath(this._context.extensionUri, 'media', 'vscode.css'));
 		const styleAnkiUri = this._view!.webview.asWebviewUri(vscode.Uri.joinPath(this._context.extensionUri, 'media', 'CodeView.css'));
@@ -181,15 +183,15 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 			<script nonce="${nonce}" src="${scriptAnkiUri}"></script>
 		</body>
 		`;
-
-		return `<html>${header}${body}</html>`;
+		this._view!.webview.html = `<html>${header}${body}</html>`;
+		this._view!.title = title;
 	}
 
 	public async error(err: unknown) {
 		try {
 			let version = await this._ankiConnect.api.miscellaneous.version();
 
-			this._view!.webview.html = this.genAnkiViewHtml(`
+			this.setAnkiViewContent(`
 			<p></p>
 			<button class="ankiview-button" id="button-opendeck">Open Deck</button>
 			<p></p>
@@ -197,7 +199,7 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 			<h3>Anki Connect Ready, Version: ${version.result}</h3>
 			`);
 		} catch (error) {
-			this._view!.webview.html = this.genAnkiViewHtml(`
+			this.setAnkiViewContent(`
 			<h3>Anki Connect Failed.</h3>
 			<button class="ankiview-button" id="button-retry">Retry</button>
 			<p>Please check:</br>
