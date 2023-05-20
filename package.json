@@ -31,6 +31,18 @@
       ]
     },
     "menus": {
+      "view/title": [
+        {
+          "command": "ankiview.command.sideview.showQuestion",
+          "when": "view == 'ankiview.view.sideview'",
+          "group": "navigation"
+        },
+        {
+          "command": "ankiview.Miscellaneous.Sync",
+          "when": "view == 'ankiview.view.sideview'",
+          "group": "navigation"
+        }
+      ],
       "webview/context": [
         {
           "command": "ankiview.Miscellaneous.Sync",
@@ -71,7 +83,11 @@
       },
       {
         "command": "ankiview.Miscellaneous.Sync",
-        "title": "AnkiView: sync"
+        "title": "AnkiView: sync",
+        "icon": {
+          "light": "./resources/light/sync.svg",
+          "dark": "./resources/dark/sync.svg"
+        }
       },
       {
         "command": "ankiview.command.sideview.openDeck",
@@ -79,7 +95,11 @@
       },
       {
         "command": "ankiview.command.sideview.showQuestion",
-        "title": "AnkiView: Sideview Show Question"
+        "title": "AnkiView: Sideview Show Question",
+        "icon": {
+          "light": "./resources/light/refresh.svg",
+          "dark": "./resources/dark/refresh.svg"
+        }
       },
       {
         "command": "ankiview.command.sideview.showAnswer",
