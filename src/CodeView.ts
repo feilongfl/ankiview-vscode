@@ -18,6 +18,21 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 		this._ankiTimeBar = ankiTimeBar;
 	}
 
+	private async codeViewHandler(data: any) {
+		switch (data.type) {
+			case 'openDeck':
+				{
+					await vscode.commands.executeCommand("ankiview.command.sideview.openDeck");
+					break;
+				}
+			case 'retry':
+				{
+					await vscode.commands.executeCommand("ankiview.command.sideview.showQuestion");
+					break;
+				}
+		}
+	}
+
 	public async resolveWebviewView(
 		webviewView: vscode.WebviewView,
 		context: vscode.WebviewViewResolveContext,
@@ -34,15 +49,7 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 			]
 		};
 
-		this._view.webview.onDidReceiveMessage(async data => {
-			switch (data.type) {
-				case 'openDeck':
-					{
-						await vscode.commands.executeCommand("ankiview.command.sideview.openDeck");
-						break;
-					}
-			}
-		});
+		this._view.webview.onDidReceiveMessage(data => this.codeViewHandler(data));
 
 		await this.showQuestion();
 	}
@@ -100,35 +107,48 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 		return text;
 	}
 
+	private genAnkiViewHtml(content: string) {
+		const scriptAnkiUri = this._view!.webview.asWebviewUri(vscode.Uri.joinPath(this._context.extensionUri, 'media', 'CodeView.js'));
+		const styleCodeUri = this._view!.webview.asWebviewUri(vscode.Uri.joinPath(this._context.extensionUri, 'media', 'vscode.css'));
+		const styleAnkiUri = this._view!.webview.asWebviewUri(vscode.Uri.joinPath(this._context.extensionUri, 'media', 'CodeView.css'));
+		const nonce = this.getNonce();
+
+		const header = `
+		<head>
+			<title>Anki Test</title>
+			<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${this._view!.webview.cspSource}; script-src 'nonce-${nonce}';">
+			<link href="${styleCodeUri}" rel="stylesheet">
+			<link href="${styleAnkiUri}" rel="stylesheet">
+		</head>
+		`;
+		const body = `
+		<body>
+			<AnkiCard>${content}</AnkiCard>
+			<script nonce="${nonce}" src="${scriptAnkiUri}"></script>
+		</body>
+		`;
+
+		return `<html>${header}${body}</html>`;
+	}
+
 	public async error(err: unknown) {
 		try {
 			let version = await this._ankiConnect.api.miscellaneous.version();
-			const scriptAnkiUri = this._view!.webview.asWebviewUri(vscode.Uri.joinPath(this._context.extensionUri, 'media', 'CodeView.js'));
-			const styleCodeUri = this._view!.webview.asWebviewUri(vscode.Uri.joinPath(this._context.extensionUri, 'media', 'vscode.css'));
-			const styleAnkiUri = this._view!.webview.asWebviewUri(vscode.Uri.joinPath(this._context.extensionUri, 'media', 'CodeView.css'));
-			const nonce = this.getNonce();
 
-			this._view!.webview.html = `
-			<head>
-				<title>Anki Test</title>
-				<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${this._view!.webview.cspSource}; script-src 'nonce-${nonce}';">
-				<link href="${styleCodeUri}" rel="stylesheet">
-				<link href="${styleAnkiUri}" rel="stylesheet">
-			</head>
+
+			this._view!.webview.html = this.genAnkiViewHtml(`
 			<h3>Anki Connect Ready, Version: ${version.result}</h3>
-
-			<button class="ankiview-opendeck-button" id="button-opendeck">Open Deck</button>
-
-			<script nonce="${nonce}" src="${scriptAnkiUri}"></script>
-			`
+			<button class="ankiview-button" id="button-opendeck">Open Deck</button>
+			`);
 		} catch (error) {
-			this._view!.webview.html = `
+			this._view!.webview.html = this.genAnkiViewHtml(`
 			<h3>Anki Connect Failed.</h3>
+			<button class="ankiview-button" id="button-retry">Retry</button>
 			<p>Please check:</br>
 			1. If anki is open.</br>
 			2. If anki-connect is installed.</br>
 			3. If anki-connect setting is correct.</p>
-			`;
+			`);
 		}
 		await this._ankiTimeBar.clear(0);
 	}

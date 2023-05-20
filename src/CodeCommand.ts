@@ -66,6 +66,7 @@ class SideviewOpenDeck extends VscodeCommand {
 
     protected error(err: unknown) {
         vscode.window.showInformationMessage('AnkiView: Deck Open Failed!');
+        this.ankiProvider.showQuestion(); // show error message to anki view
     }
 
     protected async callback() {
