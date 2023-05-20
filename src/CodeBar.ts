@@ -80,11 +80,32 @@ class TimeBar {
     }
 }
 
+class ReviewBar {
+    constructor(context: vscode.ExtensionContext) {
+        this._bar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
+        this.update(0, 0, 0, false);
+
+        context.subscriptions.push(this._bar);
+    }
+    private _bar: vscode.StatusBarItem;
+
+    /**
+     * update
+     */
+    public update(newCard: number, retryCard: number, reviewCard: number, show: boolean = true) {
+        this._bar.text = `$(testing-queued-icon) ${newCard} $(testing-failed-icon) ${retryCard} $(testing-error-icon) ${reviewCard}`;
+        if (show) { this._bar.show(); } else { this._bar.hide(); }
+    }
+}
+
 export class CodeBar {
     constructor(context: vscode.ExtensionContext) {
         this.timeBar = new TimeBar(context);
+        this.reviewBar = new ReviewBar(context);
     }
     private timeBar: TimeBar;
+    private reviewBar: ReviewBar;
 
     public clearTimer(max: number = 0) { this.timeBar.clear(max); };
+    public updateReviewStatus(newCard: number, retryCard: number, reviewCard: number, show: boolean = true) { this.reviewBar.update(newCard, retryCard, reviewCard, show); };
 }

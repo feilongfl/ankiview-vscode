@@ -149,10 +149,19 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 			let viewHtml = this.mergeViewHtml(cardHtml, ctrlHtml);
 			this.setAnkiViewContent(viewHtml, card.result.deckName);
 			await this._ankiConnect.api.graphical.guiShowQuestion();
-			let maxTaken = (await this._ankiConnect.api.deck.getDeckConfig(card.result.deckName)).result.maxTaken;
-			await this._ankiTimeBar.clearTimer(maxTaken);
+			await this.updateStatus();
 		} catch (err) {
 			this.error(err);
+		}
+	}
+
+	private async updateStatus(err: unknown = undefined) {
+		if (err !== undefined) {
+			await this._ankiTimeBar.clearTimer(0);
+		} else {
+			let card = await this._ankiConnect.api.graphical.guiCurrentCard();
+			let maxTaken = (await this._ankiConnect.api.deck.getDeckConfig(card.result.deckName)).result.maxTaken;
+			await this._ankiTimeBar.clearTimer(maxTaken);
 		}
 	}
 
@@ -209,7 +218,7 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 			3. If anki-connect setting is correct.</p>
 			`);
 		}
-		await this._ankiTimeBar.clearTimer(0);
+		await this.updateStatus(err);
 	}
 
 	public async undo() {
