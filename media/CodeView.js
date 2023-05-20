@@ -1,6 +1,4 @@
-(function () {
-    const vscode = acquireVsCodeApi();
-
+function RegistButtonListener(vscode) {
     const buttonMessageMatrix = {
         'click': {
             '#button-opendeck': {
@@ -32,11 +30,17 @@
 
     for (let event in buttonMessageMatrix) {
         for (let cls in buttonMessageMatrix[event]) {
-            if (document.querySelector(cls) === null) { continue; }
-            console.log("event add", cls, buttonMessageMatrix[event][cls]);
-            document.querySelector(cls).addEventListener(event, () => {
+            let elm = document.querySelector(cls);
+            if (elm === null) { continue; }
+            elm.addEventListener(event, () => {
                 vscode.postMessage(buttonMessageMatrix[event][cls]);
             });
         }
     }
+}
+
+(function () {
+    const vscode = acquireVsCodeApi();
+
+    RegistButtonListener(vscode);
 }());
