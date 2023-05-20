@@ -119,6 +119,11 @@
             "type": "string",
             "default": "http://localhost:8765",
             "description": "AnkiConnect listen address"
+          },
+          "ankiview.showButton": {
+            "type": "boolean",
+            "default": true,
+            "description": "Show answer button"
           }
         }
       }

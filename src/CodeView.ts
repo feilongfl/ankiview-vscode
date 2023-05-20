@@ -2,6 +2,8 @@ import * as vscode from 'vscode';
 import * as AnkiConnect from './AnkiConnect';
 import * as CodeBar from './CodeBar';
 
+const ankiviewPluginId = "ankiview";
+
 export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 
 	public static readonly viewType = 'ankiview.view.sideview';
@@ -63,6 +65,12 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 		await this._ankiConnect.api.graphical.guiDeckReview(name);
 	}
 
+	private mergeViewHtml(cardHtml: string, ctrlHtml: string) {
+		let showButton = vscode.workspace.getConfiguration(ankiviewPluginId).get<boolean>("showButton", true);
+
+		return showButton ? `<p></p>${ctrlHtml}<p></p>${cardHtml}` : cardHtml;
+	}
+
 	public async showAnswer() {
 		console.log("CodeView: showAnswer");
 		try {
@@ -81,7 +89,7 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 			<button class="ankiview-answer-button" id="button-answer-ease4">Easy</button>
 			</div>
 			`;
-			let viewHtml = `<p></p>${ctrlHtml}<p></p>${cardHtml}`;
+			let viewHtml = this.mergeViewHtml(cardHtml, ctrlHtml);
 			this._view!.webview.html = this.genAnkiViewHtml(viewHtml);
 			await this._ankiConnect.api.graphical.guiShowAnswer();
 			await this._ankiTimeBar.clear(30);
@@ -105,7 +113,7 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 			<button class="ankiview-question-button" id="button-question-show">Show Answer</button>
 			</div>
 			`;
-			let viewHtml = `<p></p>${ctrlHtml}<p></p>${cardHtml}`;
+			let viewHtml = this.mergeViewHtml(cardHtml, ctrlHtml);
 			this._view!.webview.html = this.genAnkiViewHtml(viewHtml);
 			await this._ankiConnect.api.graphical.guiShowQuestion();
 			await this._ankiTimeBar.clear(30);
