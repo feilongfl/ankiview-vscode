@@ -93,7 +93,7 @@ class ReviewBar {
      * update
      */
     public update(newCard: number, retryCard: number, reviewCard: number, show: boolean = true) {
-        this._bar.text = `$(testing-queued-icon) ${newCard} $(testing-failed-icon) ${retryCard} $(testing-error-icon) ${reviewCard}`;
+        this._bar.text = `$(testing-queued-icon) ${newCard} $(testing-failed-icon) ${retryCard} $(testing-passed-icon) ${reviewCard}`;
         if (show) { this._bar.show(); } else { this._bar.hide(); }
     }
 }
