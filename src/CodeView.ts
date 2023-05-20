@@ -158,10 +158,19 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 	private async updateStatus(err: unknown = undefined) {
 		if (err !== undefined) {
 			await this._ankiTimeBar.clearTimer(0);
+			await this._ankiTimeBar.updateReviewStatus(0, 0, 0, false);
 		} else {
 			let card = await this._ankiConnect.api.graphical.guiCurrentCard();
+
+			// get deck status
+			let deckStat = (await this._ankiConnect.api.deck.getDeckStat(card.result.deckName));
+			await this._ankiTimeBar.updateReviewStatus(deckStat!.new_count, deckStat!.learn_count, deckStat!.review_count);
+
+			// update time
 			let maxTaken = (await this._ankiConnect.api.deck.getDeckConfig(card.result.deckName)).result.maxTaken;
 			await this._ankiTimeBar.clearTimer(maxTaken);
+
+			// todo: reset card timer
 		}
 	}
 

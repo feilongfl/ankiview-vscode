@@ -30,6 +30,23 @@ export interface AnkiConnectResponse_Deck_GetDeckConfig extends AnkiConnectRespo
     }
 };
 
+export interface AnkiConnectResponse_Deck_GetDeckStats_ResultItem {
+    "deck_id": number,
+    "name": string,
+    "new_count": number,
+    "learn_count": number,
+    "review_count": number,
+    "total_in_deck": number
+}
+
+export interface AnkiConnectResponse_Deck_GetDeckStats_Result {
+    [Key: string]: AnkiConnectResponse_Deck_GetDeckStats_ResultItem;
+}
+
+export interface AnkiConnectResponse_Deck_GetDeckStats extends AnkiConnectResponse {
+    result: AnkiConnectResponse_Deck_GetDeckStats_Result,
+}
+
 export interface AnkiConnectResponse_Media_RetrieveMediaFile extends AnkiConnectResponse {
     result: string
 };
@@ -78,6 +95,19 @@ export class AnkiConnect {
                     "deck": deck,
                 },
             }),
+            getDeckStats: (decks: [string]) => this.acRequest.post<AnkiConnectResponse_Deck_GetDeckStats>('/', {
+                "action": "getDeckStats",
+                "params": {
+                    "decks": decks,
+                },
+            }),
+            getDeckStat: async (deck: string) => {
+                let result = (await this.api.deck.getDeckStats([deck])).result;
+                for (let k in result) {
+                    return result[k]; // return first value
+                }
+                return undefined;
+            },
         },
         graphical: {
             guiCurrentCard: () => this.acRequest.post<AnkiConnectResponse_Graphical_GuiCurrentCard>('/', {
