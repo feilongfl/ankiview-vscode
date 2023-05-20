@@ -168,10 +168,9 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 		const styleAnkiUri = this._view!.webview.asWebviewUri(vscode.Uri.joinPath(this._context.extensionUri, 'media', 'CodeView.css'));
 		const nonce = this.getNonce();
 
-		// <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${this._view!.webview.cspSource}; script-src 'nonce-${nonce}';">
 		const header = `
 		<head>
-			<title>Anki Test</title>
+			<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline' ${this._view!.webview.cspSource}; script-src 'nonce-${nonce}';">
 			<link href="${styleCodeUri}" rel="stylesheet">
 			<link href="${styleAnkiUri}" rel="stylesheet">
 		</head>
