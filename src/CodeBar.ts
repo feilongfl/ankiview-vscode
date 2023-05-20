@@ -44,7 +44,7 @@ class PeriodFunc {
     }
 }
 
-export class TimeBar {
+class TimeBar {
     constructor(context: vscode.ExtensionContext) {
         this._bar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
         this._bar.text = `$(clock) 0`;
@@ -68,7 +68,7 @@ export class TimeBar {
         }
     }
 
-    public clear(max: number) {
+    public clear(max: number = 0) {
         if (max === 0) {
             this._bar.hide();
         } else {
@@ -78,4 +78,13 @@ export class TimeBar {
             this._bar.show();
         }
     }
+}
+
+export class CodeBar {
+    constructor(context: vscode.ExtensionContext) {
+        this.timeBar = new TimeBar(context);
+    }
+    private timeBar: TimeBar;
+
+    public clearTimer(max: number = 0) { this.timeBar.clear(max); };
 }

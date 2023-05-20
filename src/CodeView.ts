@@ -9,11 +9,11 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 	public static readonly viewType = 'ankiview.view.sideview';
 
 	private _view?: vscode.WebviewView;
-	private _ankiTimeBar: CodeBar.TimeBar;
+	private _ankiTimeBar: CodeBar.CodeBar;
 
 	constructor(
 		private readonly _ankiConnect: AnkiConnect.AnkiConnect,
-		protected readonly ankiTimeBar: CodeBar.TimeBar,
+		protected readonly ankiTimeBar: CodeBar.CodeBar,
 		readonly _context: vscode.ExtensionContext,
 	) {
 		_context.subscriptions.push(vscode.window.registerWebviewViewProvider(AnkiViewViewProvider.viewType, this));
@@ -150,7 +150,7 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 			this.setAnkiViewContent(viewHtml, card.result.deckName);
 			await this._ankiConnect.api.graphical.guiShowQuestion();
 			let maxTaken = (await this._ankiConnect.api.deck.getDeckConfig(card.result.deckName)).result.maxTaken;
-			await this._ankiTimeBar.clear(maxTaken);
+			await this._ankiTimeBar.clearTimer(maxTaken);
 		} catch (err) {
 			this.error(err);
 		}
@@ -209,7 +209,7 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 			3. If anki-connect setting is correct.</p>
 			`);
 		}
-		await this._ankiTimeBar.clear(0);
+		await this._ankiTimeBar.clearTimer(0);
 	}
 
 	public async undo() {

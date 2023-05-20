@@ -7,7 +7,7 @@ class VscodeCommand {
     constructor(
         protected readonly _ankiConnect: AnkiConnect.AnkiConnect,
         protected readonly ankiProvider: CodeView.AnkiViewViewProvider,
-        protected readonly ankiCodeBar: CodeBar.TimeBar,
+        protected readonly ankiCodeBar: CodeBar.CodeBar,
     ) { }
 
     protected _command = "ankiview.unknow";
@@ -181,7 +181,7 @@ let commandList = [
 
 export function registCommand(ankiConnect: AnkiConnect.AnkiConnect,
     ankiProvider: CodeView.AnkiViewViewProvider,
-    ankiCodeBar: CodeBar.TimeBar,
+    ankiCodeBar: CodeBar.CodeBar,
     context: vscode.ExtensionContext) {
     commandList.forEach((vc) => { (new vc(ankiConnect, ankiProvider, ankiCodeBar)).regist(context); });
 }
