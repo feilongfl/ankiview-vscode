@@ -20,8 +20,40 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 		this._ankiTimeBar = ankiTimeBar;
 	}
 
+	private async codeViewKeyHandler(data: any) {
+		switch (data.key) {
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+				await vscode.commands.executeCommand('ankiview.command.sideview.answerCardEase' + data.key);
+				break;
+			case ' ':
+				await vscode.commands.executeCommand('ankiview.command.sideview.showAnswer');
+				break;
+			case 'z':
+				await vscode.commands.executeCommand('ankiview.command.sideview.undo');
+				break;
+
+			default:
+				break;
+		}
+	}
+
 	private async codeViewHandler(data: any) {
-		await vscode.commands.executeCommand(data.command);
+		switch (data.type) {
+			case 'command':
+				await vscode.commands.executeCommand(data.command);
+				break;
+
+			case 'key':
+				await this.codeViewKeyHandler(data);
+				break;
+
+			default:
+				console.log(`unknow event: ${JSON.stringify(data)}`);
+				break;
+		}
 	}
 
 	public async resolveWebviewView(
