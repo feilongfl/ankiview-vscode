@@ -25,6 +25,25 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 	) {
 		this._view = webviewView;
 
+		this._view.webview.options = {
+			// Allow scripts in the webview
+			enableScripts: true,
+
+			localResourceRoots: [
+				this._context.extensionUri,
+			]
+		};
+
+		this._view.webview.onDidReceiveMessage(async data => {
+			switch (data.type) {
+				case 'openDeck':
+					{
+						await vscode.commands.executeCommand("ankiview.command.sideview.openDeck");
+						break;
+					}
+			}
+		});
+
 		await this.showQuestion();
 	}
 
@@ -72,10 +91,45 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 		}
 	}
 
+	private getNonce() {
+		let text = '';
+		const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+		for (let i = 0; i < 32; i++) {
+			text += possible.charAt(Math.floor(Math.random() * possible.length));
+		}
+		return text;
+	}
+
 	public async error(err: unknown) {
-		this._view!.webview.html = `
-		<p>Please Open Collection In "Anki" Application then trig "AnkiView: SideView: Show Question" command.</p>
-		`;
+		try {
+			let version = await this._ankiConnect.api.miscellaneous.version();
+			const scriptAnkiUri = this._view!.webview.asWebviewUri(vscode.Uri.joinPath(this._context.extensionUri, 'media', 'CodeView.js'));
+			const styleCodeUri = this._view!.webview.asWebviewUri(vscode.Uri.joinPath(this._context.extensionUri, 'media', 'vscode.css'));
+			const styleAnkiUri = this._view!.webview.asWebviewUri(vscode.Uri.joinPath(this._context.extensionUri, 'media', 'CodeView.css'));
+			const nonce = this.getNonce();
+
+			this._view!.webview.html = `
+			<head>
+				<title>Anki Test</title>
+				<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${this._view!.webview.cspSource}; script-src 'nonce-${nonce}';">
+				<link href="${styleCodeUri}" rel="stylesheet">
+				<link href="${styleAnkiUri}" rel="stylesheet">
+			</head>
+			<h3>Anki Connect Ready, Version: ${version.result}</h3>
+
+			<button class="ankiview-opendeck-button" id="button-opendeck">Open Deck</button>
+
+			<script nonce="${nonce}" src="${scriptAnkiUri}"></script>
+			`
+		} catch (error) {
+			this._view!.webview.html = `
+			<h3>Anki Connect Failed.</h3>
+			<p>Please check:</br>
+			1. If anki is open.</br>
+			2. If anki-connect is installed.</br>
+			3. If anki-connect setting is correct.</p>
+			`;
+		}
 		await this._ankiTimeBar.clear(0);
 	}
 
