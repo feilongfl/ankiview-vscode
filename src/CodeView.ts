@@ -92,7 +92,6 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 			let viewHtml = this.mergeViewHtml(cardHtml, ctrlHtml);
 			this._view!.webview.html = this.genAnkiViewHtml(viewHtml);
 			await this._ankiConnect.api.graphical.guiShowAnswer();
-			await this._ankiTimeBar.clear(30);
 		} catch (err) {
 			this.error(err);
 		}
