@@ -9,6 +9,9 @@
             '#button-retry': {
                 type: 'retry'
             },
+            '#button-sync': {
+                type: 'sync'
+            },
         },
     };
 

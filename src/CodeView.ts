@@ -30,6 +30,11 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 					await vscode.commands.executeCommand("ankiview.command.sideview.showQuestion");
 					break;
 				}
+			case 'sync':
+				{
+					await vscode.commands.executeCommand("ankiview.Miscellaneous.Sync");
+					break;
+				}
 		}
 	}
 
@@ -135,10 +140,12 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 		try {
 			let version = await this._ankiConnect.api.miscellaneous.version();
 
-
 			this._view!.webview.html = this.genAnkiViewHtml(`
-			<h3>Anki Connect Ready, Version: ${version.result}</h3>
+			<p></p>
 			<button class="ankiview-button" id="button-opendeck">Open Deck</button>
+			<p></p>
+			<button class="ankiview-button" id="button-sync">Sync</button>
+			<h3>Anki Connect Ready, Version: ${version.result}</h3>
 			`);
 		} catch (error) {
 			this._view!.webview.html = this.genAnkiViewHtml(`
