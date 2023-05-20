@@ -104,7 +104,7 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 	}
 
 	public async showAnswer() {
-		console.log("CodeView: showAnswer");
+		// console.log("CodeView: showAnswer");
 		try {
 			let html = (await this._ankiConnect.api.graphical.guiCurrentCard()).result.answer;
 			let ankiHtml = await this.replaceResource(html);
@@ -130,7 +130,7 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 	}
 
 	public async showQuestion() {
-		console.log("CodeView: showQuestion");
+		// console.log("CodeView: showQuestion");
 		try {
 			let html = (await this._ankiConnect.api.graphical.guiCurrentCard()).result.question;
 			let ankiHtml = await this.replaceResource(html);
@@ -210,14 +210,14 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 	}
 
 	public async undo() {
-		console.log("CodeView: undo");
+		// console.log("CodeView: undo");
 		await this._ankiConnect.api.graphical.guiUndo();
 
 		await this.showQuestion();
 	}
 
 	public async answerCard(ease: number, autoEase: boolean = false) {
-		console.log("CodeView: answerCard: " + ease);
+		// console.log("CodeView: answerCard: " + ease);
 		await this.showAnswer();
 		let easeList = (await this._ankiConnect.api.graphical.guiCurrentCard()).result.buttons;
 
