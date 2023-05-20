@@ -4,13 +4,28 @@
     const buttonMessageMatrix = {
         'click': {
             '#button-opendeck': {
-                type: 'openDeck'
+                command: 'ankiview.command.sideview.openDeck'
             },
             '#button-retry': {
-                type: 'retry'
+                command: 'ankiview.command.sideview.showQuestion'
             },
             '#button-sync': {
-                type: 'sync'
+                command: 'ankiview.Miscellaneous.Sync'
+            },
+            '#button-question-show': {
+                command: 'ankiview.command.sideview.showAnswer'
+            },
+            '#button-answer-ease1': {
+                command: 'ankiview.command.sideview.answerCardEase1'
+            },
+            '#button-answer-ease2': {
+                command: 'ankiview.command.sideview.answerCardEase2'
+            },
+            '#button-answer-ease3': {
+                command: 'ankiview.command.sideview.answerCardEase3'
+            },
+            '#button-answer-ease4': {
+                command: 'ankiview.command.sideview.answerCardEase4'
             },
         },
     };

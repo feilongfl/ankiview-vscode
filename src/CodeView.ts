@@ -19,23 +19,7 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 	}
 
 	private async codeViewHandler(data: any) {
-		switch (data.type) {
-			case 'openDeck':
-				{
-					await vscode.commands.executeCommand("ankiview.command.sideview.openDeck");
-					break;
-				}
-			case 'retry':
-				{
-					await vscode.commands.executeCommand("ankiview.command.sideview.showQuestion");
-					break;
-				}
-			case 'sync':
-				{
-					await vscode.commands.executeCommand("ankiview.Miscellaneous.Sync");
-					break;
-				}
-		}
+		await vscode.commands.executeCommand(data.command);
 	}
 
 	public async resolveWebviewView(
@@ -83,7 +67,22 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 		console.log("CodeView: showAnswer");
 		try {
 			let html = (await this._ankiConnect.api.graphical.guiCurrentCard()).result.answer;
-			this._view!.webview.html = await this.replaceResource(html);
+			let ankiHtml = await this.replaceResource(html);
+			let cardHtml = `
+			<anki class="ankiview-answer">
+			${ankiHtml}
+			</anki>
+			`;
+			let ctrlHtml = `
+			<div class="ankiview-answer-controller">
+			<button class="ankiview-answer-button" id="button-answer-ease1">Again</button>
+			<button class="ankiview-answer-button" id="button-answer-ease2">Hard</button>
+			<button class="ankiview-answer-button" id="button-answer-ease3">Good</button>
+			<button class="ankiview-answer-button" id="button-answer-ease4">Easy</button>
+			</div>
+			`;
+			let viewHtml = `<p></p>${ctrlHtml}<p></p>${cardHtml}`;
+			this._view!.webview.html = this.genAnkiViewHtml(viewHtml);
 			await this._ankiConnect.api.graphical.guiShowAnswer();
 			await this._ankiTimeBar.clear(30);
 		} catch (err) {
@@ -95,7 +94,19 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 		console.log("CodeView: showQuestion");
 		try {
 			let html = (await this._ankiConnect.api.graphical.guiCurrentCard()).result.question;
-			this._view!.webview.html = await this.replaceResource(html);
+			let ankiHtml = await this.replaceResource(html);
+			let cardHtml = `
+			<anki class="ankiview-question">
+			${ankiHtml}
+			</anki>
+			`;
+			let ctrlHtml = `
+			<div class="ankiview-question-controller">
+			<button class="ankiview-question-button" id="button-question-show">Show Answer</button>
+			</div>
+			`;
+			let viewHtml = `<p></p>${ctrlHtml}<p></p>${cardHtml}`;
+			this._view!.webview.html = this.genAnkiViewHtml(viewHtml);
 			await this._ankiConnect.api.graphical.guiShowQuestion();
 			await this._ankiTimeBar.clear(30);
 		} catch (err) {
@@ -118,10 +129,10 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 		const styleAnkiUri = this._view!.webview.asWebviewUri(vscode.Uri.joinPath(this._context.extensionUri, 'media', 'CodeView.css'));
 		const nonce = this.getNonce();
 
+		// <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${this._view!.webview.cspSource}; script-src 'nonce-${nonce}';">
 		const header = `
 		<head>
 			<title>Anki Test</title>
-			<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${this._view!.webview.cspSource}; script-src 'nonce-${nonce}';">
 			<link href="${styleCodeUri}" rel="stylesheet">
 			<link href="${styleAnkiUri}" rel="stylesheet">
 		</head>
