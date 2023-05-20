@@ -115,10 +115,10 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 			`;
 			let ctrlHtml = `
 			<div class="ankiview-answer-controller">
-			<button class="ankiview-answer-button" id="button-answer-ease1">Again</button>
-			<button class="ankiview-answer-button" id="button-answer-ease2">Hard</button>
-			<button class="ankiview-answer-button" id="button-answer-ease3">Good</button>
-			<button class="ankiview-answer-button" id="button-answer-ease4">Easy</button>
+			<button class="ankiview-answer-button" id="button-answer-ease1">Again (1)</button>
+			<button class="ankiview-answer-button" id="button-answer-ease2">Hard (2)</button>
+			<button class="ankiview-answer-button" id="button-answer-ease3">Good (3)</button>
+			<button class="ankiview-answer-button" id="button-answer-ease4">Easy (4)</button>
 			</div>
 			`;
 			let viewHtml = this.mergeViewHtml(cardHtml, ctrlHtml);
@@ -141,7 +141,7 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 			`;
 			let ctrlHtml = `
 			<div class="ankiview-question-controller">
-			<button class="ankiview-question-button" id="button-question-show">Show Answer</button>
+			<button class="ankiview-question-button" id="button-question-show">Show Answer (Space)</button>
 			</div>
 			`;
 			let viewHtml = this.mergeViewHtml(cardHtml, ctrlHtml);
