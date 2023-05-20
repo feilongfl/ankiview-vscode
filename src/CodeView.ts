@@ -106,7 +106,8 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 	public async showAnswer() {
 		// console.log("CodeView: showAnswer");
 		try {
-			let html = (await this._ankiConnect.api.graphical.guiCurrentCard()).result.answer;
+			let card = await this._ankiConnect.api.graphical.guiCurrentCard();
+			let html = card.result.answer;
 			let ankiHtml = await this.replaceResource(html);
 			let cardHtml = `
 			<anki class="ankiview-answer">
@@ -122,8 +123,7 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 			</div>
 			`;
 			let viewHtml = this.mergeViewHtml(cardHtml, ctrlHtml);
-			let viewTitle = "ANKI: Answer";
-			this.setAnkiViewContent(viewHtml, viewTitle);
+			this.setAnkiViewContent(viewHtml, card.result.deckName);
 			await this._ankiConnect.api.graphical.guiShowAnswer();
 		} catch (err) {
 			this.error(err);
@@ -133,7 +133,8 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 	public async showQuestion() {
 		// console.log("CodeView: showQuestion");
 		try {
-			let html = (await this._ankiConnect.api.graphical.guiCurrentCard()).result.question;
+			let card = await this._ankiConnect.api.graphical.guiCurrentCard();
+			let html = card.result.question;
 			let ankiHtml = await this.replaceResource(html);
 			let cardHtml = `
 			<anki class="ankiview-question">
@@ -146,8 +147,7 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 			</div>
 			`;
 			let viewHtml = this.mergeViewHtml(cardHtml, ctrlHtml);
-			let viewTitle = "ANKI: Question";
-			this.setAnkiViewContent(viewHtml, viewTitle);
+			this.setAnkiViewContent(viewHtml, card.result.deckName);
 			await this._ankiConnect.api.graphical.guiShowQuestion();
 			await this._ankiTimeBar.clear(30);
 		} catch (err) {
@@ -164,7 +164,7 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 		return text;
 	}
 
-	private setAnkiViewContent(content: string, title: string = "ANKI") {
+	private setAnkiViewContent(content: string, title: string | undefined = undefined) {
 		const scriptAnkiUri = this._view!.webview.asWebviewUri(vscode.Uri.joinPath(this._context.extensionUri, 'media', 'CodeView.js'));
 		const styleCodeUri = this._view!.webview.asWebviewUri(vscode.Uri.joinPath(this._context.extensionUri, 'media', 'vscode.css'));
 		const styleAnkiUri = this._view!.webview.asWebviewUri(vscode.Uri.joinPath(this._context.extensionUri, 'media', 'CodeView.css'));
@@ -184,7 +184,7 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 		</body>
 		`;
 		this._view!.webview.html = `<html>${header}${body}</html>`;
-		this._view!.title = title;
+		this._view!.title = title === undefined ? "ANKI" : "ANKI: " + title;
 	}
 
 	public async error(err: unknown) {
