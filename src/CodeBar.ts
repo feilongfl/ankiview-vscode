@@ -1,5 +1,7 @@
 import * as vscode from 'vscode';
 
+const ankiviewPluginId = "ankiview";
+
 class PeriodFunc {
     private _callback: any;
     private _period: number;
@@ -49,16 +51,17 @@ export class TimeBar {
 
         context.subscriptions.push(this._bar);
 
-        this._timer = new PeriodFunc((time: number, max: number) => this.updateBar(time, max), 1000);
+        let warnThreshold = vscode.workspace.getConfiguration(ankiviewPluginId).get<number>("TimeBar.warnThreshold", 0.66);
+        this._timer = new PeriodFunc((time: number, max: number) => this.updateBar(time, warnThreshold * max, max), 1000);
     }
 
     private _bar: vscode.StatusBarItem;
     private _timer: PeriodFunc;
-    private updateBar(time: number, max: number) {
+    private updateBar(time: number, warn: number, max: number) {
         this._bar.text = `$(clock) ${time}`;
         if (time === max) {
             this._bar.backgroundColor = new vscode.ThemeColor('statusBarItem.errorBackground');
-        } else if (time > max / 3 * 2) {
+        } else if (time > warn) {
             this._bar.backgroundColor = new vscode.ThemeColor('statusBarItem.warningBackground');
         } else {
             this._bar.backgroundColor = new vscode.ThemeColor('statusBarItem.prominentBackground');
