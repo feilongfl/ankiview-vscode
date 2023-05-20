@@ -9,7 +9,7 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 	public static readonly viewType = 'ankiview.view.sideview';
 
 	private _view?: vscode.WebviewView;
-	private _ankiTimeBar: CodeBar.CodeBar;
+	private _ankiCodeBar: CodeBar.CodeBar;
 
 	constructor(
 		private readonly _ankiConnect: AnkiConnect.AnkiConnect,
@@ -17,7 +17,7 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 		readonly _context: vscode.ExtensionContext,
 	) {
 		_context.subscriptions.push(vscode.window.registerWebviewViewProvider(AnkiViewViewProvider.viewType, this));
-		this._ankiTimeBar = ankiTimeBar;
+		this._ankiCodeBar = ankiTimeBar;
 	}
 
 	private async codeViewKeyHandler(data: any) {
@@ -157,18 +157,18 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 
 	private async updateStatus(err: unknown = undefined) {
 		if (err !== undefined) {
-			await this._ankiTimeBar.clearTimer(0);
-			await this._ankiTimeBar.updateReviewStatus(0, 0, 0, false);
+			await this._ankiCodeBar.clearTimer(0);
+			await this._ankiCodeBar.updateReviewStatus(0, 0, 0, false);
 		} else {
 			let card = await this._ankiConnect.api.graphical.guiCurrentCard();
 
 			// get deck status
 			let deckStat = (await this._ankiConnect.api.deck.getDeckStat(card.result.deckName));
-			await this._ankiTimeBar.updateReviewStatus(deckStat!.new_count, deckStat!.learn_count, deckStat!.review_count);
+			await this._ankiCodeBar.updateReviewStatus(deckStat!.new_count, deckStat!.learn_count, deckStat!.review_count);
 
 			// update time
 			let maxTaken = (await this._ankiConnect.api.deck.getDeckConfig(card.result.deckName)).result.maxTaken;
-			await this._ankiTimeBar.clearTimer(maxTaken);
+			await this._ankiCodeBar.clearTimer(maxTaken);
 
 			// todo: reset card timer
 		}
