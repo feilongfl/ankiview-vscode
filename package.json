@@ -3,7 +3,7 @@
   "displayName": "Anki View",
   "description": "Show Anki in vscode.",
   "icon": "market/icon_128.png",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "engines": {
     "vscode": "^1.78.0"
   },
