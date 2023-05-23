@@ -191,7 +191,7 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 
 		const header = `
 		<head>
-			<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline' ${this._view!.webview.cspSource}; script-src 'nonce-${nonce}';">
+			<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src self data:; style-src 'unsafe-inline' ${this._view!.webview.cspSource}; script-src 'nonce-${nonce}';">
 			<link href="${styleCodeUri}" rel="stylesheet">
 			<link href="${styleAnkiUri}" rel="stylesheet">
 		</head>
