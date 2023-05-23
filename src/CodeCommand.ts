@@ -1,3 +1,5 @@
+import pLimit from 'p-limit';
+
 import * as vscode from 'vscode';
 import * as AnkiConnect from './AnkiConnect';
 import * as CodeView from './CodeView';
@@ -61,6 +63,23 @@ class MiscellaneousSync extends VscodeCommand {
     }
 }
 
+class DeckQuickPickItem implements vscode.QuickPickItem {
+    description?: string;
+    constructor(
+        protected readonly _ankiConnect: AnkiConnect.AnkiConnect,
+        public readonly label: string
+    ) { }
+
+    public async get() {
+        try {
+            let deckStat = await this._ankiConnect.api.deck.getDeckStat(this.label);
+            this.description = `$(testing-queued-icon) ${deckStat!.new_count} $(testing-failed-icon) ${deckStat!.learn_count} $(testing-passed-icon) ${deckStat!.review_count}`;
+        } catch (err) { }
+
+        return this;
+    }
+}
+
 class SideviewOpenDeck extends VscodeCommand {
     protected _command = "ankiview.command.sideview.openDeck";
 
@@ -70,10 +89,13 @@ class SideviewOpenDeck extends VscodeCommand {
     }
 
     protected async callback() {
-        let decks = await this.ankiProvider.getDecks();
+        const limit = pLimit(5); // anki-connect max concurrency: 5
+        let deckNames = await this.ankiProvider.getDecks();
+        let decks = Promise.all(deckNames.map(d => limit(async () => (new DeckQuickPickItem(this._ankiConnect, d)).get())));
+
         let deck = await vscode.window.showQuickPick(decks);
         if (deck !== undefined) {
-            await this.ankiProvider.openDeck(deck);
+            await this.ankiProvider.openDeck(deck.label);
             await this.ankiProvider.showQuestion();
         }
     }
