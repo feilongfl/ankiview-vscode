@@ -24,6 +24,6 @@
 
 ## Usage
 
-- [wiki](https://github.com/feilongfl/ankiview-vscode/wiki)
+- Please check [wiki](https://github.com/feilongfl/ankiview-vscode/wiki)
 
 ![screenshot](doc/images/screenshot.png)
