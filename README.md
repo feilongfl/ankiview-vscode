@@ -1,5 +1,7 @@
 # ankiview
 
+This extension helps you to display [Anki](https://apps.ankiweb.net/) cards in vscode.
+
 ## sponsor
 
 > This is a completely free and open-source extension.   
