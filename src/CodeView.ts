@@ -198,7 +198,7 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 			<link href="${styleCodeUri}" rel="stylesheet">
 			<link href="${styleAnkiUri}" rel="stylesheet">
 		</head>
-		`;
+		`;//内容安全策略阻止了anki模板中的js运行。Refused to execute inline script because it violates the following Content Security Policy directive
 		const body = `
 		<body>
 			<AnkiCard>${content}</AnkiCard>
