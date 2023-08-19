@@ -195,7 +195,6 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 
 		const header = `
 		<head>
-			<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src self data:; style-src 'unsafe-inline' ${this._view!.webview.cspSource}; script-src 'nonce-${nonce}';">
 			<link href="${styleCodeUri}" rel="stylesheet">
 			<link href="${styleAnkiUri}" rel="stylesheet">
 		</head>
@@ -207,7 +206,7 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 		</body>
 		`;
 		this._view!.webview.html = `<html>${header}${body}</html>`;
-		this._view!.title = title === undefined ? "ANKI" : "ANKI: " + title;
+		this._view!.title = title === undefined ? "" : "";//删除标题显示，增加隐蔽性
 	}
 
 	public async error(err: unknown) {
