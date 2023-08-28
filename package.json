@@ -145,6 +145,11 @@
             "default": true,
             "description": "Show answer button"
           },
+          "ankiview.viewTitle": {
+            "type": "string",
+            "default": "ANKI ${ANKI_DECK_NAME}",
+            "description": "Title of AnkiView"
+          },
           "ankiview.TimeBar.warnThreshold": {
             "type": "number",
             "default": 0.66,
