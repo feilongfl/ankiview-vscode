@@ -187,6 +187,14 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 		return text;
 	}
 
+	private setViewTitle(deckName: string | undefined = undefined) {
+		let titlePattern = vscode.workspace.getConfiguration(ankiviewPluginId).get<string>("viewTitle", "ANKI ${ANKI_DECK_NAME}");
+
+		titlePattern = titlePattern.replace('${ANKI_DECK_NAME}', deckName || '');
+
+		this._view!.title = titlePattern;
+	}
+
 	private setAnkiViewContent(content: string, deckName: string | undefined = undefined) {
 		const scriptAnkiUri = this._view!.webview.asWebviewUri(vscode.Uri.joinPath(this._context.extensionUri, 'media', 'CodeView.js'));
 		const styleCodeUri = this._view!.webview.asWebviewUri(vscode.Uri.joinPath(this._context.extensionUri, 'media', 'vscode.css'));
@@ -207,7 +215,7 @@ export class AnkiViewViewProvider implements vscode.WebviewViewProvider {
 		</body>
 		`;
 		this._view!.webview.html = `<html>${header}${body}</html>`;
-		this._view!.title = deckName === undefined ? "ANKI" : "ANKI: " + deckName;
+		this.setViewTitle(deckName);
 	}
 
 	public async error(err: unknown) {
