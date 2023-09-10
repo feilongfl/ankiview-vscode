@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.0.8] - 2023-08-10
+## [0.0.9] - 2023-09-10
 
 ### CodeCommand
 
@@ -12,6 +12,8 @@ All notable changes to this project will be documented in this file.
 
 - Fix image CSP error
 - Fix #26
+- Refact setAnkiViewContent parameter
+- Add setTitle function
 
 ### Documentation
 
